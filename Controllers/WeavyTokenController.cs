@@ -36,10 +36,10 @@ public class WeavyTokenController : ControllerBase
         //return strTokenOAuth;
 
         // hard-wired token from https://get.weavy.io/get-started/add-chat
-        //var strToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnZXQud2VhdnkuaW8iLCJzdWIiOjEyNjksImRpciI6IlNhbmRib3giLCJnaXZlbl9uYW1lIjoiQmVybmFyZG8iLCJmYW1pbHlfbmFtZSI6ImRlIENhc3RpbGhvIiwiZW1haWwiOiJiZXJuYXJkby1jYXN0aWxob0Bob3RtYWlsLmNvbSIsImV4cCI6MTY1NDgwMzE0NH0.5QPHNR6WdbH4q38YQYm7eQEgYtGdxcPlV-dIn8jODtw";
+        //var strTokenSite = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnZXQud2VhdnkuaW8iLCJzdWIiOjEyNjksImRpciI6IlNhbmRib3giLCJnaXZlbl9uYW1lIjoiQmVybmFyZG8iLCJmYW1pbHlfbmFtZSI6ImRlIENhc3RpbGhvIiwiZW1haWwiOiJiZXJuYXJkby1jYXN0aWxob0Bob3RtYWlsLmNvbSIsImV4cCI6MTY1NDgwMzE0NH0.5QPHNR6WdbH4q38YQYm7eQEgYtGdxcPlV-dIn8jODtw";
         //var handler = new JwtSecurityTokenHandler();
-        //var jwtSecurityToken = handler.ReadJwtToken(strToken);
-        //return strToken;
+        //var jwtSecurityToken = handler.ReadJwtToken(strTokenSite);
+        //return strTokenSite;
 
         // generate a token for this user
         return GenerateToken(user);

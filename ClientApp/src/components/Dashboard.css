@@ -47,13 +47,8 @@
 }
 
 /*
-    Weavy popups 
+    Weavy buttons and popups
 */
-.popup-weavy {
-    min-width: 350px !important;
-    min-height: 200px;
-}
-
 .btn-weavy {
     background: transparent;
     border-color: rgba(0,0,0,.2);
@@ -65,3 +60,8 @@
     .btn-weavy:hover {
         background: rgba(0,0,0,.2);
     }
+
+.popup-weavy {
+    min-width: 350px !important;
+    /*min-height: 200px;*/
+}

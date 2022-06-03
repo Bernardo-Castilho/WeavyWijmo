@@ -37,7 +37,7 @@ export class Dashboard extends Component {
             id: "messenger",
             type: "messenger",
             container: "#theChat",
-            css: ".weavy-container div, .weavy-container iframe { width: 100%; height: 100% }", // should not be needed?
+            css: ".weavy-container div, .weavy-container iframe { width: 100%; }", // should not be needed?
             //open: false
         });
 
