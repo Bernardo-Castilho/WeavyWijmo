@@ -23,20 +23,19 @@ public class WeavyTokenController : ControllerBase
     [HttpGet]
     public string Get(string userId)
     {
-        //var strTokenOAuth = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4ZjM4ODM0NjhmYzY1OWFiYjQ0NzVmMzYzMTNkMjI1ODVjMmQ3Y2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMTI2NzEzMTU4ODItcjhvdGVkcDRoOTBidjVvc2k2dmk3b2JtMzN0dWxwajkuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIxMjY3MTMxNTg4Mi1yOG90ZWRwNGg5MGJ2NW9zaTZ2aTdvYm0zM3R1bHBqOS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExNzM2OTg4MTE3Njk0NTIwNzY0OSIsImVtYWlsIjoicmFjYXN0aWxob0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6InFhUkpZdTdEMjlWVnVvWVNvbmpzV0EiLCJuYW1lIjoiUm9kcmlnbyBDYXN0aWxobyIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQU9oMTRHalJEeWwzN3hUZGMzV0E3SDlHX2FFLVp2Ni10M0d5d2dzR09JQ09Wdjg9czk2LWMiLCJnaXZlbl9uYW1lIjoiUm9kcmlnbyIsImZhbWlseV9uYW1lIjoiQ2FzdGlsaG8iLCJsb2NhbGUiOiJlbiIsImlhdCI6MTY1NDI3NTAyNiwiZXhwIjoxNjU0Mjc4NjI2LCJqdGkiOiJjYjZhOTFhMTljOWMwZWU1MTg3NjQ1ZTUwYWNlYzcyOGQxNGEyYjliIn0.eZSXZz01VH8wgy80y00-S5JTREot18ajljGc24I7TVKNDo-3xtdHXqwWR0FJUh0cr6I4zObdkxu7ugT6xWzsojM2Bvb8GSGfUzGBQREVq4mZCDreSLSO-Li7gylpUQ_ztBQyh9wT6CyMCXK9qh1C0yeaO6wAC_Ix9ttf0m3jWUO-ZUDLy-zDMQgoUSidOkKLHvXdXJTV1CAMLJVVsI_wya5VM2PyF5bvoGRMubae4RxGrSYo6lFUGssmb-pjjGOwfYzFm9MVwIGLQjbOEf4yXh8dUnF_649EL2oj3oSULDpzssJ-GENSKzHT04MQ6qHQXtDuyLNDvZb4bdHj2LCl_g";
-        var strTokenSite = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnZXQud2VhdnkuaW8iLCJzdWIiOjEyNjksImRpciI6IlNhbmRib3giLCJnaXZlbl9uYW1lIjoiQmVybmFyZG8iLCJmYW1pbHlfbmFtZSI6ImRlIENhc3RpbGhvIiwiZW1haWwiOiJiZXJuYXJkby1jYXN0aWxob0Bob3RtYWlsLmNvbSIsImV4cCI6MTY1NDgwMzE0NH0.5QPHNR6WdbH4q38YQYm7eQEgYtGdxcPlV-dIn8jODtw";
-        //var handler = new JwtSecurityTokenHandler();
-        //var ttt = handler.ReadJwtToken(strTokenSite);
+        var strToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnZXQud2VhdnkuaW8iLCJzdWIiOjEyNjksImRpciI6IlNhbmRib3giLCJnaXZlbl9uYW1lIjoiQmVybmFyZG8iLCJmYW1pbHlfbmFtZSI6ImRlIENhc3RpbGhvIiwiZW1haWwiOiJiZXJuYXJkby1jYXN0aWxob0Bob3RtYWlsLmNvbSIsImV4cCI6MTY1NTE0NDcyMn0.WBqjXXm6a8UA3rf1DGS5UW3xHNX3RLI5RNEPImFM8nw";
+        var handler = new JwtSecurityTokenHandler();
+        var tokenParts = handler.ReadToken(strToken);
 
         if (userId == "fakeAuth")
         {
-            return strTokenSite;
+            return strToken; // this works (token from the https://get.weavy.io/ site)
         }
         var user = _ctx.Users.Find(userId);
         if (user != null)
         {
-            return strTokenSite;
-            //return GenerateToken(user);
+            //return strToken;
+            return GenerateToken(user); // this doesn't (sign in with JWT token failed. Forbidden??)
         }
         return "";
     }
@@ -47,17 +46,15 @@ public class WeavyTokenController : ControllerBase
         // get first and last names from the email
         ParseEmail(user.Email, out string firstName, out string lastName);
 
-        //var secret = "dvG7gDigjzamH3g3DhwnyWFJbSZCSJC2"; // get.weavy.io
-        var secret = "Ux3Ko8vRGjGhfX34ENciHyagqSwbL5EM"; // sandbox
+        var secret = "dvG7gDigjzamH3g3DhwnyWFJbSZCSJC2"; // from https://get.weavy.io/
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
         var descriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim("iss", "sandbox"),//"get.weavy.io"), // Weavy Client Id
-                new Claim("dir", "Sandbox"), // what's this?
+                new Claim("iss", "get.weavy.io"), // Weavy Client Id
                 new Claim("sub", user.Id), // unique user id
-                //new Claim("sub", "1269", ClaimValueTypes.Integer64),
+                new Claim("dir", "Sandbox"), // what's this?
                 new Claim("given_name", firstName),
                 new Claim("family_name", lastName),
                 new Claim("email", user.Email),

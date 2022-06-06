@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import authService from './api-authorization/AuthorizeService'
+//import authService from './api-authorization/AuthorizeService'
 
 //import "@weavy/dropin-js/dist/weavy-dropin.css";
 import Weavy from "@weavy/dropin-js";
@@ -18,7 +18,7 @@ export class Chat extends Component {
             stylesheet: "weavy-dropin.css",
             jwt: this.getWeavyToken,
         });
-        const messenger = weavy.app({
+        weavy.app({
             id: "messenger",
             type: "messenger",
             container: "#theChat"
@@ -27,8 +27,9 @@ export class Chat extends Component {
 
     // get Weavy token
     async getWeavyToken() {
-        var user = await authService.getUser();
-        var response = await fetch(`weavytoken?userId=${user.sub}`);
+        //var user = await authService.getUser();
+        //var response = await fetch(`weavytoken?userId=${user.sub}`);
+        var response = await fetch(`weavytoken?userId=fakeAuth`);
         var token = await response.text();
         return token;
     }
