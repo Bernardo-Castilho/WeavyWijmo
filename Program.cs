@@ -22,9 +22,6 @@ builder.Services.AddIdentityServer()
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
-builder.Services.AddAuthorization()
-    .AddIdentityServerBuilder();
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

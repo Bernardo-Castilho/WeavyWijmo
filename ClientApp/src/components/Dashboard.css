@@ -62,6 +62,7 @@
     }
 
 .popup-weavy {
-    min-width: 350px !important;
-    /*min-height: 200px;*/
+    width: 400px;
+    height: 250px;
 }
+

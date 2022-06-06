@@ -9,7 +9,7 @@ import { FilterType } from "@grapecity/wijmo.grid.filter";
 import { FlexChart, FlexChartSeries } from "@grapecity/wijmo.react.chart";
 import { Popup } from "@grapecity/wijmo.react.input";
 
-//import "@weavy/dropin-js/dist/weavy-dropin.css";
+import "@weavy/dropin-js/dist/weavy-dropin.css";
 import Weavy from "@weavy/dropin-js";
 
 import "./Dashboard.css";
@@ -30,17 +30,16 @@ export class Dashboard extends Component {
         // Weavy instance and apps
         const weavy = new Weavy({
             url: "https://wijmo.weavy.io", // sandbox created at https://get.weavy.io/
-            stylesheet: "weavy-dropin.css",
+            //stylesheet: "weavy-dropin.css",
             jwt: this.getWeavyToken
         });
         const messenger = weavy.app({
             id: "messenger",
             type: "messenger",
-            container: "#theChat",
-            css: ".weavy-container div, .weavy-container iframe { width: 100%; }", // should not be needed?
-            //open: false
+            container: "#theChat"
         });
 
+        // state contains the dashboard data and Weavy messenger app
         this.state = {
             data: sheets.getSheet("Sales"), // get the sales data from the Google sheet
             messenger: messenger, // Weavy messenger app
@@ -89,13 +88,15 @@ export class Dashboard extends Component {
                         &#x1f4ac;
                     </button>
                 </p>
-                <Popup id="theChat" className="popup-weavy" owner="#btnChat" shown={() => {
-                    const msg = this.state.messenger;
-                    requestAnimationFrame(() => { // wait for popup to finish DOM changes
-                        msg.reset(); // reconnect iframe after DOM changes
-                        msg.open();
-                    });
-                }} />
+                <Popup id="theChat" className="popup-weavy" owner="#btnChat" shown={
+                    () => {
+                        requestAnimationFrame(() => {
+                            var messenger = this.state.messenger;
+                            messenger.reset(); // reconnect iframe after DOM modifications
+                            messenger.open();
+                        });
+                    }
+                } />
 
                 <div className="dashboard">
 
