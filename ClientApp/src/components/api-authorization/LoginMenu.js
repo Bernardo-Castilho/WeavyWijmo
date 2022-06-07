@@ -28,7 +28,17 @@ export class LoginMenu extends Component {
         this.setState({
             isAuthenticated,
             userName: user && user.name
-        });
+       });
+    }
+
+    getFirstName(email) {
+        var m = email.match(/[a-z]+/gi);
+        if (m != null) {
+            var name = m[0];
+            name = name[0].toUpperCase() + name.substr(1).toLowerCase();
+            return name;
+        }
+        return email;
     }
 
     render() {
@@ -47,7 +57,7 @@ export class LoginMenu extends Component {
     authenticatedView(userName, profilePath, logoutPath) {
         return (<Fragment>
             <NavItem>
-                <NavLink tag={Link} className="text-dark" to={profilePath}>Hello {userName}</NavLink>
+                <NavLink tag={Link} className="text-dark" to={profilePath}>Hello <b>{this.getFirstName(userName)}</b></NavLink>
             </NavItem>
             <NavItem>
                 <NavLink tag={Link} className="text-dark" to={logoutPath}>Logout</NavLink>

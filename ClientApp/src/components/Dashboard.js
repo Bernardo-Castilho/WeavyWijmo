@@ -36,7 +36,8 @@ export class Dashboard extends Component {
         const messenger = weavy.app({
             id: "messenger",
             type: "messenger",
-            container: "#theChat"
+            container: "#theChat",
+            open: false
         });
 
         // state contains the dashboard data and Weavy messenger app

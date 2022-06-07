@@ -15,6 +15,8 @@ namespace WeavyWijmo.Controllers;
 public class WeavyTokenController : ControllerBase
 {
     ApplicationDbContext _ctx;
+    static string _theToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnZXQud2VhdnkuaW8iLCJzdWIiOjEyNjksImRpciI6IlNhbmRib3giLCJnaXZlbl9uYW1lIjoiQmVybmFyZG8iLCJmYW1pbHlfbmFtZSI6ImRlIENhc3RpbGhvIiwiZW1haWwiOiJiZXJuYXJkby1jYXN0aWxob0Bob3RtYWlsLmNvbSIsImV4cCI6MTY1NTE0NDcyMn0.WBqjXXm6a8UA3rf1DGS5UW3xHNX3RLI5RNEPImFM8nw";
+
     public WeavyTokenController(ApplicationDbContext ctx)
     {
         _ctx = ctx;
@@ -23,19 +25,14 @@ public class WeavyTokenController : ControllerBase
     [HttpGet]
     public string Get(string userId)
     {
-        var strToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnZXQud2VhdnkuaW8iLCJzdWIiOjEyNjksImRpciI6IlNhbmRib3giLCJnaXZlbl9uYW1lIjoiQmVybmFyZG8iLCJmYW1pbHlfbmFtZSI6ImRlIENhc3RpbGhvIiwiZW1haWwiOiJiZXJuYXJkby1jYXN0aWxob0Bob3RtYWlsLmNvbSIsImV4cCI6MTY1NTE0NDcyMn0.WBqjXXm6a8UA3rf1DGS5UW3xHNX3RLI5RNEPImFM8nw";
-        var handler = new JwtSecurityTokenHandler();
-        var tokenParts = handler.ReadToken(strToken);
-
-        if (userId == "fakeAuth")
+        if (userId == "staticUser")
         {
-            return strToken; // this works (token from the https://get.weavy.io/ site)
+            return _theToken; // this works (token from the https://get.weavy.io/ site)
         }
         var user = _ctx.Users.Find(userId);
         if (user != null)
         {
-            //return strToken;
-            return GenerateToken(user); // this doesn't (sign in with JWT token failed. Forbidden??)
+            return GenerateToken(user); // this doesn't work (sign in with JWT token failed. Forbidden??)
         }
         return "";
     }
@@ -47,14 +44,15 @@ public class WeavyTokenController : ControllerBase
         ParseEmail(user.Email, out string firstName, out string lastName);
 
         var secret = "dvG7gDigjzamH3g3DhwnyWFJbSZCSJC2"; // from https://get.weavy.io/
+        //var secret = "Ux3Ko8vRGjGhfX34ENciHyagqSwbL5EM"; // ??
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
         var descriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
                 new Claim("iss", "get.weavy.io"), // Weavy Client Id
+                new Claim("dir", "sandbox"), // what's this?
                 new Claim("sub", user.Id), // unique user id
-                new Claim("dir", "Sandbox"), // what's this?
                 new Claim("given_name", firstName),
                 new Claim("family_name", lastName),
                 new Claim("email", user.Email),
@@ -64,7 +62,10 @@ public class WeavyTokenController : ControllerBase
         };
         var handler = new JwtSecurityTokenHandler();
         var token = handler.CreateToken(descriptor);
-        return handler.WriteToken(token);
+        //var token = handler.CreateJwtSecurityToken(descriptor); // same as CreateToken...
+        var tokenStr = handler.WriteToken(token);
+        return tokenStr; // this doesn't work (sign in with JWT token failed. Forbidden??)
+        //return _theToken; // this works (token from the https://get.weavy.io/ site)
     }
     private static void ParseEmail(string eMail, out string firstName, out string lastName)
     {

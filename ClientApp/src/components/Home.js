@@ -6,11 +6,9 @@ export class Home extends Component {
     render() {
         return (
             <div>
-
                 <h1>
                     Wijmo Dashboard with Weavy
                 </h1>
-
                 <p>
                     This app shows how you can use
                     {" "}<a href="https://www.weavy.com" target="_blank">Weavy</a>{" "}
