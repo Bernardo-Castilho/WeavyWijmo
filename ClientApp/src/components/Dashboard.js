@@ -30,14 +30,14 @@ export class Dashboard extends Component {
         // Weavy instance and apps
         const weavy = new Weavy({
             url: "https://wijmo.weavy.io", // sandbox created at https://get.weavy.io/
-            //stylesheet: "weavy-dropin.css",
-            jwt: this.getWeavyToken
+            jwt: this.getWeavyToken,
         });
+        weavy.authentication.setJwt(this.getWeavyToken); // needed to support user switching
         const messenger = weavy.app({
             id: "dashboardChat",
             type: "messenger",
             container: "#theChat",
-            open: false
+            //open: false
         });
 
         // state contains the dashboard data and Weavy messenger app
@@ -45,6 +45,7 @@ export class Dashboard extends Component {
             data: sheets.getSheet("Sales"), // get the sales data from the Google sheet
             messenger: messenger, // Weavy messenger app
         };
+
         console.log("** Dashboard created");
     }
 

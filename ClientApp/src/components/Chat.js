@@ -15,14 +15,15 @@ export class Chat extends Component {
         // Weavy instance and apps
         const weavy = new Weavy({
             url: "https://wijmo.weavy.io",
-            //stylesheet: "weavy-dropin.css", // doesn't work as well as the import css
-            jwt: this.getWeavyToken,
+            jwt: this.getWeavyToken
         });
+        weavy.authentication.setJwt(this.getWeavyToken); // needed to support user switching
         weavy.app({
             id: "pureChat",
             type: "messenger",
             container: "#theChat"
         });
+
         console.log("** Chat created");
     }
 
