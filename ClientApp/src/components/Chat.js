@@ -28,7 +28,7 @@ export class Chat extends Component {
 
     // get Weavy token
     async getWeavyToken() {
-        console.log("** Chat logging is as staticUser");
+        console.log("** Chat logging in as staticUser");
         //var user = await authService.getUser();
         //var response = await fetch(`weavytoken?userId=${user.sub}`);
         var response = await fetch(`weavytoken?userId=staticUser`);

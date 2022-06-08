@@ -9,7 +9,9 @@ and
 [here](https://alexcodetuts.com/2020/01/26/asp-net-core-3-1-with-react-user-authentication-and-registration).
 
 The main point of interest in this app is the **WeavyTokenController** class,
-which shows how you can create JWT tokens for use with Weavy from the server,
+which shows how you can create JWT tokens for use with Weavy from the server
 using the **JwtSecurityTokenHandler** class.
+
+The tokens are specific to the user that is currently logged in.
 
 

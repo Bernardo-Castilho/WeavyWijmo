@@ -51,7 +51,7 @@ export class Dashboard extends Component {
     // get Weavy token
     async getWeavyToken() {
         var user = await authService.getUser();
-        console.log(`** Dashboard logging is as ${user.name}`);
+        console.log(`** Dashboard logging in as ${user.name}`);
         var response = await fetch(`weavytoken?userId=${user.sub}`);
         var token = await response.text();
         return token;
