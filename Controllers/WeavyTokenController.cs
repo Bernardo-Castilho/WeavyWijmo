@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -27,14 +28,28 @@ public class WeavyTokenController : ControllerBase
     {
         if (userId == "staticUser")
         {
-            return _theToken; // this works (token from the https://get.weavy.io/ site)
+            //ShowToken(_theToken);
+            return _theToken;
         }
         var user = _ctx.Users.Find(userId);
         if (user != null)
         {
-            return GenerateToken(user); // this doesn't work (sign in with JWT token failed. Forbidden??)
+            var theToken = GenerateToken(user);
+            //ShowToken(theToken);
+            return theToken;
         }
         return "";
+    }
+
+    // show the token (for debugging)
+    private static void ShowToken(string tokenStr)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwt = handler.ReadJwtToken(tokenStr);
+        Debug.WriteLine(tokenStr == _theToken ? "** Static token" : "** User token");
+        Debug.WriteLine("\tclient: " + jwt.Payload["iss"]);
+        Debug.WriteLine("\tuser: " + jwt.Payload["sub"]);
+        Debug.WriteLine("\temail: " + jwt.Payload["email"]);
     }
 
     // generate a WJT token to use with Weavy
@@ -44,28 +59,30 @@ public class WeavyTokenController : ControllerBase
         ParseEmail(user.Email, out string firstName, out string lastName);
 
         var secret = "dvG7gDigjzamH3g3DhwnyWFJbSZCSJC2"; // from https://get.weavy.io/
-        //var secret = "Ux3Ko8vRGjGhfX34ENciHyagqSwbL5EM"; // ??
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
         var descriptor = new SecurityTokenDescriptor
         {
+            // see https://www.weavy.com/docs/frontend/authentication
             Subject = new ClaimsIdentity(new Claim[]
             {
+                // required claims
                 new Claim("iss", "get.weavy.io"), // Weavy Client Id
-                new Claim("dir", "sandbox"), // what's this?
                 new Claim("sub", user.Id), // unique user id
-                new Claim("given_name", firstName),
-                new Claim("family_name", lastName),
+
+                // additional/optional claims
+                new Claim("dir", "sandbox"),
                 new Claim("email", user.Email),
+                new Claim("family_name", lastName),
+                new Claim("given_name", firstName),
+                new Claim("name", firstName + " " + lastName),
             }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
         };
         var handler = new JwtSecurityTokenHandler();
         var token = handler.CreateToken(descriptor);
-        //var token = handler.CreateJwtSecurityToken(descriptor); // same as CreateToken...
         var tokenStr = handler.WriteToken(token);
-        return tokenStr; // this doesn't work (sign in with JWT token failed. Forbidden??)
-        //return _theToken; // this works (token from the https://get.weavy.io/ site)
+        return tokenStr;
     }
     private static void ParseEmail(string eMail, out string firstName, out string lastName)
     {

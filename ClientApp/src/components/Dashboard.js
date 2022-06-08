@@ -34,7 +34,7 @@ export class Dashboard extends Component {
             jwt: this.getWeavyToken
         });
         const messenger = weavy.app({
-            id: "messenger",
+            id: "dashboardChat",
             type: "messenger",
             container: "#theChat",
             open: false
@@ -45,11 +45,13 @@ export class Dashboard extends Component {
             data: sheets.getSheet("Sales"), // get the sales data from the Google sheet
             messenger: messenger, // Weavy messenger app
         };
+        console.log("** Dashboard created");
     }
 
     // get Weavy token
     async getWeavyToken() {
         var user = await authService.getUser();
+        console.log(`** Dashboard logging is as ${user.name}`);
         var response = await fetch(`weavytoken?userId=${user.sub}`);
         var token = await response.text();
         return token;

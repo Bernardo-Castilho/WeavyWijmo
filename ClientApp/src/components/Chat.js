@@ -19,14 +19,16 @@ export class Chat extends Component {
             jwt: this.getWeavyToken,
         });
         weavy.app({
-            id: "messenger",
+            id: "pureChat",
             type: "messenger",
             container: "#theChat"
         });
+        console.log("** Chat created");
     }
 
     // get Weavy token
     async getWeavyToken() {
+        console.log("** Chat logging is as staticUser");
         //var user = await authService.getUser();
         //var response = await fetch(`weavytoken?userId=${user.sub}`);
         var response = await fetch(`weavytoken?userId=staticUser`);
