@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-//import authService from './api-authorization/AuthorizeService'
+import authService from './api-authorization/AuthorizeService'
 
 import "@weavy/dropin-js/dist/weavy-dropin.css";
 import Weavy from "@weavy/dropin-js";
@@ -23,16 +23,12 @@ export class Chat extends Component {
             type: "messenger",
             container: "#theChat"
         });
-
-        console.log("** Chat created");
     }
 
     // get Weavy token
     async getWeavyToken() {
-        console.log("** Chat logging in as staticUser");
-        //var user = await authService.getUser();
-        //var response = await fetch(`weavytoken?userId=${user.sub}`);
-        var response = await fetch(`weavytoken?userId=staticUser`);
+        var user = await authService.getUser();
+        var response = await fetch(`weavytoken?userId=${user.sub}`);
         var token = await response.text();
         return token;
     }

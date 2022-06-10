@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Diagnostics;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,7 +15,6 @@ namespace WeavyWijmo.Controllers;
 public class WeavyTokenController : ControllerBase
 {
     ApplicationDbContext _ctx;
-    static string _theToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnZXQud2VhdnkuaW8iLCJzdWIiOjEyNjksImRpciI6IlNhbmRib3giLCJnaXZlbl9uYW1lIjoiQmVybmFyZG8iLCJmYW1pbHlfbmFtZSI6ImRlIENhc3RpbGhvIiwiZW1haWwiOiJiZXJuYXJkby1jYXN0aWxob0Bob3RtYWlsLmNvbSIsImV4cCI6MTY1NTE0NDcyMn0.WBqjXXm6a8UA3rf1DGS5UW3xHNX3RLI5RNEPImFM8nw";
 
     public WeavyTokenController(ApplicationDbContext ctx)
     {
@@ -26,33 +24,16 @@ public class WeavyTokenController : ControllerBase
     [HttpGet]
     public string Get(string userId)
     {
-        if (userId == "staticUser")
-        {
-            //ShowToken(_theToken);
-            return _theToken;
-        }
         var user = _ctx.Users.Find(userId);
         if (user != null)
         {
             var theToken = GenerateToken(user);
-            //ShowToken(theToken);
             return theToken;
         }
         return "";
     }
 
-    // show the token (for debugging)
-    private static void ShowToken(string tokenStr)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        var jwt = handler.ReadJwtToken(tokenStr);
-        Debug.WriteLine(tokenStr == _theToken ? "** Static token" : "** User token");
-        Debug.WriteLine("\tclient: " + jwt.Payload["iss"]);
-        Debug.WriteLine("\tuser: " + jwt.Payload["sub"]);
-        Debug.WriteLine("\temail: " + jwt.Payload["email"]);
-    }
-
-    // generate a WJT token to use with Weavy
+    // generates a JWT token to use with Weavy
     private static string GenerateToken(ApplicationUser user)
     {
         // get first and last names from the email
