@@ -15,3 +15,4 @@ See details about creating this type of app
 and
 [here](https://alexcodetuts.com/2020/01/26/asp-net-core-3-1-with-react-user-authentication-and-registration).
 
+To run the app, load it in Visual Studio 2022 and press F5.
