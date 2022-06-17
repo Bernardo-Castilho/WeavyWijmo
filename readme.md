@@ -10,10 +10,8 @@ creates JWT tokens based on a user ID.
 
 The UI part of the app uses React, Weavy, and Wijmo.
 
-See details about creating this type of app
-[here](https://docs.microsoft.com/en-us/aspnet/core/client-side/spa/react?view=aspnetcore-6.0&tabs=visual-studio)
-and
-[here](https://alexcodetuts.com/2020/01/26/asp-net-core-3-1-with-react-user-authentication-and-registration).
+This app was created using Visual Studio 2022 
+(new project, ASP.NET Core with React.js template).
 
 To run the app, load it in Visual Studio 2022 and press F5.
 
