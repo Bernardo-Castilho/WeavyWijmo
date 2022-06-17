@@ -16,3 +16,6 @@ and
 [here](https://alexcodetuts.com/2020/01/26/asp-net-core-3-1-with-react-user-authentication-and-registration).
 
 To run the app, load it in Visual Studio 2022 and press F5.
+
+This app was created to help people get started in the 
+[Weavy/Wijmo Hackathon](https://www.weavy.com/hackathonwijmo).
