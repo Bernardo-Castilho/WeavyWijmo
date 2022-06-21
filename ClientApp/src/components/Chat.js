@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import authService from './api-authorization/AuthorizeService'
 
-import "@weavy/dropin-js/dist/weavy-dropin.css";
 import Weavy from "@weavy/dropin-js";
+import "@weavy/themes/dist/weavy-default.css";
 
 import "./Chat.css";
 

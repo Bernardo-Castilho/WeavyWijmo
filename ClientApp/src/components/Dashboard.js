@@ -9,8 +9,8 @@ import { FilterType } from "@grapecity/wijmo.grid.filter";
 import { FlexChart, FlexChartSeries } from "@grapecity/wijmo.react.chart";
 import { Popup } from "@grapecity/wijmo.react.input";
 
-import "@weavy/dropin-js/dist/weavy-dropin.css";
 import Weavy from "@weavy/dropin-js";
+import "@weavy/themes/dist/weavy-default.css";
 
 import "./Dashboard.css";
 

@@ -15,5 +15,5 @@ This app was created using Visual Studio 2022
 
 To run the app, load it in Visual Studio 2022 and press F5.
 
-This app was created to help people get started in the 
+This app was created to help you get started in the 
 [Weavy/Wijmo Hackathon](https://www.weavy.com/hackathonwijmo).
